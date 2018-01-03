@@ -12,19 +12,59 @@
     </sql>
 
     <select id="getAllContact" resultMap="BaseResultMap">
-       SELECT
-          <include refid="base_column"/>
-       FROM
-          contact
+        SELECT
+        <include refid="base_column"/>
+        FROM
+        contact
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
-          <include refid="base_column"/>
+        <include refid="base_column"/>
         FROM
-          contact
+        contact
         WHERE
-          id=#{id}
+        id=#{id}
     </select>
 
+    <insert id="insert" parameterMap="com.cgs.contact_us.bean.Contact">
+        INSERT INTO contact(<include refid="base_column"/>) VALUES (#{id},#{title},#{content});
+    </insert>
+
+    <update id="update" parameterMap="com.cgs.contact_us.bean.Contact">
+        UPDATE
+          contact
+          SET
+          <if test="title != null">
+            title=#{title},
+          </if>
+          <if test="content != null">
+            content=#{content},
+          </if>
+          id=#{id}
+          WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterMap="java.lang.String">
+        DELETE FROM contact WHERE id=#{id}
+    </delete>
+
+    <select id="find"
+            parameterMap="com.cgs.contact_us.bean.Contact"
+            resultMap="BaseResultMap"
+            resultOrdered="true"
+            timeout="20">
+        SELECT
+        <include refid="base_column"/>
+        FROM
+        contact
+        WHERE 1=1
+        <if test="title != null">
+            AND title=#{title}
+        </if>
+        <if test="content != null">
+            AND content=#{content}
+        </if>
+
+    </select>
 </mapper>

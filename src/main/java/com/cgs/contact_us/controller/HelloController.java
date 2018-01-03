@@ -5,11 +5,10 @@ import com.cgs.contact_us.service.impl.ContactServiesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,16 +21,23 @@ public class HelloController {
     private ContactServiesImpl contactServies;
 
     @ResponseBody
-    @RequestMapping("/hello")
-    public String helloworke(){
+    @RequestMapping(value = "/hello.html", method = RequestMethod.GET)
+    public String helloworke() {
         return "hello";
     }
 
-    @RequestMapping("/list")
-    public String getAll(ModelMap model){
-        List<Contact> contactList = contactServies.getAll();
-        model.addAttribute("data",contactList);
-        model.addAttribute("id", contactList.get(0).getId());
+    @RequestMapping(value = "/list.html", method = RequestMethod.GET)
+    public String list(ModelMap model) {
         return "contact/list";
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
+    public String getAll(ModelMap model) {
+        List<Contact> contactList = contactServies.getAll();
+        model.addAttribute("data", contactList);
+        return "contact/list";
+    }
+
+
 }
