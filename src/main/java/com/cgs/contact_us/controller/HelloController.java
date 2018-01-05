@@ -39,5 +39,8 @@ public class HelloController {
         return "contact/list";
     }
 
+    @RequestMapping(value = "/test.html",method = RequestMethod.GET)
+    public void test(){
 
+    }
 }
